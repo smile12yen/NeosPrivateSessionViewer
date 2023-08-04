@@ -2,10 +2,24 @@ const WebSocket = require('ws');
 
 const port = process.env.PORT || 3000;
 const wss = new WebSocket.Server({ port: port });
-const sessions = new Map();
-sessions.set("1","dummy1n");
-sessions.set("2","dummy2n");
-sessions.set("3","dummy3n");
+const public_sessions = new Map();
+const all_sessions = [];
+
+public_sessions.set("1","dummy1n");
+public_sessions.set("2","dummy2n");
+public_sessions.set("3","dummy3n");
+
+function sendPublicSessionInfo(ws){
+  const valuesArray = Array.from(public_sessions.values());
+  const valuesString = "sessionDatas," + valuesArray.join(', ');
+
+  ws.send(valuesString);
+}
+
+function sendCompleteSetSettionId(ws){
+  const str = "complete,setSettionId";
+  ws.send(str);
+}
 
 wss.on('connection', (ws) => {
   console.log('WebSocket connected');
@@ -16,16 +30,23 @@ wss.on('connection', (ws) => {
 
     try{
       const data = JSON.parse(message);
+      all_sessions.push(ws);
 
       if(data.type=='setSessionId'){
-        sessions.set(ws,data.sessionId);
-        console.log(sessions);
-      }else if(data.type=='getSessionData'){
-        const valuesArray = Array.from(sessions.values());
-        const valuesString = valuesArray.join(', ');
+        public_sessions.set(ws,data.sessionId);
+        
+        //要求者以外にセッション情報を送信する
+        all_sessions.forEach(element => {
+          if(ws!=element){
+            sendPublicSessionInfo(element);
+          }
+        });
+        
+        //要求者に完了報告する
+        sendCompleteSetSettionId(ws);
 
-        ws.send(valuesString);
-        console.log(valuesString);
+      }else if(data.type=='getSessionData'){
+        sendPublicSessionInfo(ws);
       }
 
 
@@ -40,11 +61,12 @@ wss.on('connection', (ws) => {
   // クライアントが切断されたときの処理
   ws.on('close', () => {
     console.log('WebSocket disconnected');
-    
-    if (sessions.has(ws)) {
-      sessions.delete(ws);
+    all_sessions = all_sessions.filter(n => n !== ws);
+
+    if (public_sessions.has(ws)) {
+      public_sessions.delete(ws);
     }
-    console.log(sessions);
+    console.log(public_sessions);
   });
 });
 
