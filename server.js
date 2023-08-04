@@ -40,7 +40,7 @@ wss.on('connection', (ws) => {
   // クライアントが切断されたときの処理
   ws.on('close', () => {
     console.log('WebSocket disconnected');
-    sessions.clear(ws);
+    sessions.delete(ws);
     console.log(sessions);
   });
 });
