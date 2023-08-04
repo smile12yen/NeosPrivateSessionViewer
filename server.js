@@ -3,7 +3,7 @@ const WebSocket = require('ws');
 const port = process.env.PORT || 3000;
 const wss = new WebSocket.Server({ port: port });
 const public_sessions = new Map();
-const all_sessions = [];
+var all_sessions = [];
 
 public_sessions.set("1","dummy1n");
 public_sessions.set("2","dummy2n");
@@ -14,11 +14,14 @@ function sendPublicSessionInfo(ws){
   const valuesString = "sessionDatas," + valuesArray.join(', ');
 
   ws.send(valuesString);
+  console.log("Send message:"+valuesString);
 }
 
 function sendCompleteSetSettionId(ws){
   const str = "complete,setSettionId";
   ws.send(str);
+  
+  console.log("Send message:"+str);
 }
 
 wss.on('connection', (ws) => {
