@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 8080 });
+const port = process.env.PORT || 3000;
+const wss = new WebSocket.Server({ port: port });
 const sessions = new Map();
 sessions.set("1","dummy1n");
 sessions.set("2","dummy2n");
@@ -44,4 +45,4 @@ wss.on('connection', (ws) => {
   });
 });
 
-console.log('WebSocket server started on port 8080');
+console.log('WebSocket server started on port '+port);
