@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const wss = new WebSocket.Server({ port: port });
 const public_sessions = new Map();
 var all_sessions = [];
@@ -11,7 +11,7 @@ public_sessions.set("3","dummy3n");
 
 function sendPublicSessionInfo(ws){
   const valuesArray = Array.from(public_sessions.values());
-  const valuesString = ("sessionDatas," + valuesArray.join(', ')).replace(/\r?\n/g, '');
+  const valuesString = ("sessionDatas," + valuesArray.join(', ')).replace(/[\s\n]/g, '');
 
   ws.send(valuesString);
   console.log("Send message:"+valuesString);
