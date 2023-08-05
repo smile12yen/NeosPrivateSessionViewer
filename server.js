@@ -63,13 +63,24 @@ wss.on('connection', (ws) => {
 
   // クライアントが切断されたときの処理
   ws.on('close', () => {
-    console.log('WebSocket disconnected');
+    console.log('WebSocket disconnected. try delete session 10 second lator');
     all_sessions = all_sessions.filter(n => n !== ws);
 
-    if (public_sessions.has(ws)) {
-      public_sessions.delete(ws);
-    }
-    console.log(public_sessions);
+    // セッションリストからの削除を10秒後に予約
+    sessionTimeoutId = setTimeout(() => {
+      if (public_sessions.has(ws)) {
+        public_sessions.delete(ws);
+      }
+      console.log("delete session:"+public_sessions);
+    }, 10000); // 10秒後に実行
+
+    // タイムアウトが不要になった場合はクリアする
+    // 例: セッションが再接続された場合
+    ws.on('message', (message) => {
+      // メッセージ受信時にセッションのタイムアウトをクリア
+      clearTimeout(sessionTimeoutId);
+      console.log("cancel delete session:"+public_sessions);
+    });
   });
 });
 
