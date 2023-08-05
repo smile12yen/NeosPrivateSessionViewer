@@ -11,7 +11,7 @@ public_sessions.set("3","dummy3n");
 
 function sendPublicSessionInfo(ws){
   const valuesArray = Array.from(public_sessions.values());
-  const valuesString = "sessionDatas," + valuesArray.join(', ');
+  const valuesString = ("sessionDatas," + valuesArray.join(', ')).replace(/\r?\n/g, '');
 
   ws.send(valuesString);
   console.log("Send message:"+valuesString);
