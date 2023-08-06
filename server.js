@@ -35,7 +35,7 @@ wss.on('connection', (ws) => {
 
     try{
       const data = JSON.parse(message);
-      all_sessions.push(ws);
+      all_sessions.add(ws);
 
       if(data.type=='setSessionId'){
         public_sessions.set(ws,data.sessionId);
