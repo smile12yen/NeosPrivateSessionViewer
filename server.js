@@ -13,7 +13,12 @@ public_sessions.set("3","dummy3n");
 
 function sendPublicSessionInfo(ws){
   const valuesArray = Array.from(public_sessions.values());
-  const valuesString = ("sessionDatas," + valuesArray.join(', ')).replace(/[\s\n]/g, '');
+  
+  const strs = new Set();
+  valuesArray.forEach(element => {
+    strs.add("{"+element.sessionId+","+element.worldName+","+element.discription+","+element.hostName+"}");
+  });
+  const valuesString = ("sessionDatas," + strs.join(', ')).replace(/[\s\n]/g, '');
 
   ws.send(valuesString);
   console.log("Send message:"+valuesString);
@@ -38,7 +43,7 @@ wss.on('connection', (ws) => {
       all_sessions.add(ws);
 
       if(data.type=='setSessionId'){
-        public_sessions.set(ws,data.sessionId);
+        public_sessions.set(ws,data.content);
         
         //要求者以外にセッション情報を送信する
         all_sessions.forEach(element => {
