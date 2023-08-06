@@ -3,7 +3,7 @@ const WebSocket = require('ws');
 const port = process.env.PORT || 8080;
 const wss = new WebSocket.Server({ port: port });
 const public_sessions = new Map();
-var all_sessions = [];
+const all_sessions = new Set();
 
 /*
 public_sessions.set("1","dummy1n");
@@ -66,12 +66,15 @@ wss.on('connection', (ws) => {
   // クライアントが切断されたときの処理
   ws.on('close', () => {
     console.log('WebSocket disconnected. try delete session 10 second lator');
-    all_sessions = all_sessions.filter(n => n !== ws);
+    
 
     // セッションリストからの削除を10秒後に予約
     sessionTimeoutId = setTimeout(() => {
       if (public_sessions.has(ws)) {
         public_sessions.delete(ws);
+      }
+      if(all_sessions.has(ws)){
+        all_sessions.delete(ws);
       }
       console.log("delete session:"+public_sessions);
     }, 10000); // 10秒後に実行
