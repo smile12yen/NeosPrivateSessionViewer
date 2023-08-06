@@ -5,9 +5,11 @@ const wss = new WebSocket.Server({ port: port });
 const public_sessions = new Map();
 var all_sessions = [];
 
+/*
 public_sessions.set("1","dummy1n");
 public_sessions.set("2","dummy2n");
 public_sessions.set("3","dummy3n");
+*/
 
 function sendPublicSessionInfo(ws){
   const valuesArray = Array.from(public_sessions.values());
