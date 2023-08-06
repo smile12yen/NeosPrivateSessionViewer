@@ -18,7 +18,9 @@ function sendPublicSessionInfo(ws){
   valuesArray.forEach(element => {
     strs.add("{"+element.sessionId+","+element.worldName+","+element.discription+","+element.hostName+"}");
   });
-  const valuesString = ("sessionDatas," + strs.join(', ')).replace(/[\s\n]/g, '');
+  const strsArray = Array.from(strs);
+
+  const valuesString = ("sessionDatas," + strsArray.join(', ')).replace(/[\s\n]/g, '');
 
   ws.send(valuesString);
   console.log("Send message:"+valuesString);
