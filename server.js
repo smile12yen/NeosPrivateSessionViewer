@@ -16,7 +16,7 @@ function sendPublicSessionInfo(ws){
   
   const strs = new Set();
   valuesArray.forEach(element => {
-    const new_worldName = element.worldName+"("+element.sessionId+") by "+element.hostName;
+    const new_worldName = element.worldName+"("+element.hostName+")";
     if(element.discription=="")element.discription="ワールド説明文がありません";
     strs.add("{"+element.sessionId+","+new_worldName+","+element.discription+","+element.hostName+","+element.activePlayerCount+"}");
   });
