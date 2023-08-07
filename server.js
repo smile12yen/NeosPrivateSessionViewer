@@ -16,9 +16,9 @@ function sendPublicSessionInfo(ws){
   
   const strs = new Set();
   valuesArray.forEach(element => {
-    element.worldName = element.worldName+"("+element.sessionId+") by "+element.hostName;
+    const new_worldName = element.worldName+"("+element.sessionId+") by "+element.hostName;
     if(element.discription=="")element.discription="ワールド説明文がありません";
-    strs.add("{"+element.sessionId+","+element.worldName+","+element.discription+","+element.hostName+"}");
+    strs.add("{"+element.sessionId+","+new_worldName+","+element.discription+","+element.hostName+"}");
   });
   const strsArray = Array.from(strs);
 
