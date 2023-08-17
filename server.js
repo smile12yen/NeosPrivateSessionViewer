@@ -16,8 +16,20 @@ function sendPublicSessionInfo(ws){
   
   const strs = new Set();
   valuesArray.forEach(element => {
-    const new_worldName = element.worldName+"("+element.hostName+")";
-    if(element.discription=="")element.discription="ワールド説明文がありません";
+    var new_worldName="";
+    if(element.has('worldName') && element.get('worldName')!=""){
+      new_worldName = element.worldName+"("+element.hostName+")";
+    }else{
+      new_worldName = "ワールド名未設定 ("+element.hostName+")";
+    }
+
+    var new_worldDiscription="";
+    if(element.has('discription')  && element.get('discription')!=""){
+      new_worldDiscription = element.discription;
+    }else{
+      new_worldDiscription="ワールド説明文がありません";
+    }
+
     strs.add("{"+element.sessionId+","+new_worldName+","+element.discription+","+element.hostName+","+element.activePlayerCount+"}");
   });
   const strsArray = Array.from(strs);
