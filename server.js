@@ -17,14 +17,14 @@ function sendPublicSessionInfo(ws){
   const strs = new Set();
   valuesArray.forEach(element => {
     var new_worldName="";
-    if(element.has('worldName') && element.get('worldName')!=""){
+    if(element.worldName && element.worldName != ""){
       new_worldName = element.worldName+"("+element.hostName+")";
     }else{
       new_worldName = "ワールド名未設定 ("+element.hostName+")";
     }
 
     var new_worldDiscription="";
-    if(element.has('discription')  && element.get('discription')!=""){
+    if(element.discription && element.discription != ""){
       new_worldDiscription = element.discription;
     }else{
       new_worldDiscription="ワールド説明文がありません";
