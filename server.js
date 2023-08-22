@@ -30,7 +30,7 @@ function sendPublicSessionInfo(ws){
       new_worldDiscription="ワールド説明文がありません";
     }
 
-    strs.add("{"+element.sessionId+","+new_worldName+","+element.discription+","+element.hostName+","+element.activePlayerCount+"}");
+    strs.add("{"+element.sessionId+","+new_worldName+","+new_worldDiscription+","+element.hostName+","+element.activePlayerCount+"}");
   });
   const strsArray = Array.from(strs);
 
